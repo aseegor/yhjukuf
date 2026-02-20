@@ -4,6 +4,8 @@ export type BlockFieldRule = {
   visible?: boolean;
   editable?: boolean;
   prefilledValue?: string;
+  fillMode?: 'fill' | 'select' | 'check';
+  fillValue?: string | boolean;
 };
 
 export type ContractCreateBlockCase = {
@@ -20,7 +22,7 @@ export const contractCreateBlockCases: Record<string, ContractCreateBlockCase> =
     block: 'Параметры',
     rules: [
       { field: 'Валюта', visible: true, editable: true, prefilledValue: 'RUB' },
-      { field: 'Сумма', visible: true, editable: true },
+      { field: 'Сумма', visible: true, editable: true, fillMode: 'fill', fillValue: '1000' },
       { field: 'Комментарий', visible: false }
     ]
   },
@@ -29,8 +31,8 @@ export const contractCreateBlockCases: Record<string, ContractCreateBlockCase> =
     type: 'Специальный',
     block: 'Параметры',
     rules: [
-      { field: 'Валюта', visible: true, editable: false, prefilledValue: 'USD' },
-      { field: 'Сумма', visible: true, editable: true },
+      { field: 'Валюта', visible: true, editable: false, prefilledValue: 'USD', fillMode: 'select', fillValue: 'USD' },
+      { field: 'Сумма', visible: true, editable: true, fillMode: 'fill', fillValue: '2500' },
       { field: 'Комментарий', visible: true, editable: true }
     ]
   }
