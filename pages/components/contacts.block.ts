@@ -10,15 +10,19 @@ export class ContactsBlock {
   ) {}
 
   phone(index: number = 0): FormField {
-    return this.block.field('Телефон', index);
+    return new FormField(this.phoneInput(index));
   }
 
   email(index: number = 0): FormField {
-    return this.block.field('Email', index);
+    return new FormField(this.emailInput(index));
   }
 
   address(index: number = 0): FormField {
-    return this.block.field('Адрес', index);
+    return new FormField(this.addressInput(index));
+  }
+
+  usageType(index: number = 0): FormField {
+    return new FormField(this.usageTypeInput(index));
   }
 
   async addRow(
@@ -48,5 +52,31 @@ export class ContactsBlock {
   async expectRowCountAtLeast(count: number): Promise<void> {
     const rows = this.block.root.locator("xpath=.//*[contains(@class,'row') or contains(@class,'item')]");
     expect(await rows.count()).toBeGreaterThanOrEqual(count);
+  }
+
+  private contactSection(contactType: string, index: number): Locator {
+    return this.block.root
+      .locator(
+        `xpath=.//section[contains(@class,'grid-section-container')][.//h3[normalize-space()='${contactType}']]`
+      )
+      .nth(index);
+  }
+
+  private phoneInput(index: number): Locator {
+    return this.contactSection('Телефон', index).locator('xpath=.//input[not(@readonly)]').first();
+  }
+
+  private emailInput(index: number): Locator {
+    return this.contactSection('E-mail', index).locator('xpath=.//input[not(@readonly)]').first();
+  }
+
+  private addressInput(index: number): Locator {
+    return this.contactSection('Почтовый адрес', index).locator('xpath=.//textarea').first();
+  }
+
+  private usageTypeInput(index: number): Locator {
+    return this.contactSection('Почтовый адрес', index)
+      .locator("xpath=.//input[@label='Вид использования контакта' or @readonly]")
+      .first();
   }
 }
