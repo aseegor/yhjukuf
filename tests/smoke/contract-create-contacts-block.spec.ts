@@ -1,5 +1,4 @@
 import { test } from '../fixtures';
-import { ContactsBlock } from '../../pages/components/contacts.block';
 
 test(
   'contacts block: add row and fill indexed fields',
@@ -8,9 +7,9 @@ test(
     await contractCreatePage.goto();
     await contractCreatePage.expectOpened();
 
-    const contactsBlock = new ContactsBlock(contractCreatePage.block('Контакты'));
+    const contactsBlock = contractCreatePage.contactsBlock('Контакты');
 
-    await contactsBlock.addRow();
+    await contactsBlock.addRow('Телефон');
     await contactsBlock.phone(0).fill('+70000000000');
     await contactsBlock.email(0).fill('autotest@example.com');
     await contactsBlock.setCheckbox(0, true);

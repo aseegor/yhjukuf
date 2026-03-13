@@ -1,9 +1,13 @@
-import { expect, Locator } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { ContractBlock } from './contract-block';
+import { ContactTypeMenu } from './contact-type-menu';
 import { FormField } from './form-field';
 
 export class ContactsBlock {
-  constructor(private readonly block: ContractBlock) {}
+  constructor(
+    private readonly block: ContractBlock,
+    private readonly page: Page
+  ) {}
 
   phone(index: number = 0): FormField {
     return this.block.field('Телефон', index);
@@ -17,7 +21,17 @@ export class ContactsBlock {
     return this.block.field('Адрес', index);
   }
 
-  async addRow(buttonName: string = 'Добавить'): Promise<void> {
+  async addRow(
+    contactType: string = 'Телефон',
+    addButtonName: string = 'Добавить контакт'
+  ): Promise<void> {
+    await this.block.root.getByRole('button', { name: addButtonName }).click();
+
+    const menu = new ContactTypeMenu(this.page);
+    await menu.select(contactType);
+  }
+
+  async clickAddButton(buttonName: string = 'Добавить'): Promise<void> {
     await this.block.root.getByRole('button', { name: buttonName }).click();
   }
 

@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { ContractBlock } from './components/contract-block';
+import { ContactsBlock } from './components/contacts.block';
 import { OptionalModal } from './components/optional-modal';
 
 export class ContractCreatePage {
@@ -19,6 +20,10 @@ export class ContractCreatePage {
 
   block(title: string): ContractBlock {
     return new ContractBlock(this.locateBlock(title));
+  }
+
+  contactsBlock(title: string = 'Контакты'): ContactsBlock {
+    return new ContactsBlock(this.block(title), this.page);
   }
 
   async expectBlockVisible(title: string): Promise<void> {
